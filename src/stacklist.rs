@@ -61,6 +61,46 @@ mod test {
             })
         })
     }
+
+    fn example1() {
+        let mut x = Box::new(42);
+        let r = &x;
+
+        if rand::random::<f64>() > 0.5 {
+            *x = 24;
+
+            // Doing this at this position would've caused a compiler error in
+            // the previous line because the borrow would be invalid:
+            // println!("{}", r);
+        } else {
+            println!("{}", r);
+        }
+    }
+
+    fn example2() {
+        let mut x = Box::new(42);
+        let mut z = &x;
+        for i in 1..100 {
+            println!("{}", z);
+
+            // When we overwrite x, then we're invalidating the borrow on x made
+            // when initializing z If we didn't re-borrow the new x value in z,
+            // Rust would fail with a "cannot assign to x because it is already
+            // borrowed". Which kind of proves the importance of
+            x = Box::new(i);
+            z = &x;
+        }
+    }
+
+    fn example3() {
+        struct MutStr<'a, 'b> {
+            s: &'a mut &'b str,
+        }
+
+        let mut s = "hello";
+        *MutStr { s: &mut s }.s = "world";
+        println!("{}", s);
+    }
 }
 
 #[test]

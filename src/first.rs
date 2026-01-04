@@ -14,10 +14,10 @@
 //
 // Note that the above memory layout occurs because:
 // - The Box instance allocates BadList1 in the heap
-// - The Cons definition takes 96 bytes (32 + 64 bytes due to the pointer)
+// - The Cons definition takes 96 bits (32 + 64 bits due to the pointer)
 //
 // As such, when BadList1 is of the Empty variant and should take 1 bit of
-// space, it takes 96 bytes out  of which most of them are junk and unused.
+// space, it takes 96 bits out  of which most of them are junk and unused.
 // This is due to how enums are typically encoded, because we can change the
 // enum type any time we want, changing an empty instance to a non-empty one.
 //
